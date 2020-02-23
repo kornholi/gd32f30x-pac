@@ -1,0 +1,31 @@
+_svd: GD32F30x_XD.svd
+
+# Derive all GPIO ports from GPIOA. The original SVD derives from derived peripherals which some
+# tools struggle with.
+_derive:
+  GPIOC: GPIOA
+
+# Fix access typos
+RCU:
+  ADDINT:
+    _modify:
+      IRC48MSTBIC:
+        access: write-only
+
+RTC:
+  "PSCH,PSCL":
+    _modify:
+      PSC:
+        access: write-only
+
+  _modify:
+    "DIVH,DIVL":
+      access: read-only
+    "ALRMH,ALRML":
+      access: write-only
+
+USART0:
+  STAT1:
+    _modify:
+      "EBF,RTF":
+        access: write-only
